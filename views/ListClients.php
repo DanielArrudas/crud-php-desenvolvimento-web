@@ -23,6 +23,7 @@
                 </tr>
             </thead>
             <tbody>
+                <?php if(!empty($resultData)): ?>
                 <?php foreach ($resultData as $data): ?>
                     <?php
                     $escolaridadeFormatado = match ($data['escolaridade']) {
@@ -41,7 +42,8 @@
                         <td><?= $escolaridadeFormatado ?></td>
                     </tr>
                 <?php endforeach; ?>
-
+            <?php endif; ?>
+            
             </tbody>
         </table>
     </div>
