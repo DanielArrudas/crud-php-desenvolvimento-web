@@ -1,8 +1,8 @@
 <?php
 
-require_once 'controllers/clientsController.php';
+require_once 'controllers/ClientsController.php';
 
-$action = !empty($_GET['a']) ? $_GET['a'] : 'getAll';
+$action = !empty($_GET['action']) ? $_GET['action'] : 'getAll';
 
 $controller = new ClientsController();
 $controller->{$action}();

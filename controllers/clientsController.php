@@ -14,6 +14,6 @@ class ClientsController
     public function getAll()
     {
         $resultData = $this->model->getAll();
-        require_once './views/listar_clientes.php';
+        require_once './views/ListClients.php';
     }
 }
