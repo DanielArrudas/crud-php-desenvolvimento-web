@@ -1,1 +1,26 @@
-<!-- Conexão com o banco de dados -->
+<?php
+
+const SERVERNAME = 'localhost';
+const USERNAME = 'root';
+const PASSWORD = '';
+const DBNAME = 'loja';
+
+class Connect
+{
+    protected $connection;
+    public function __construct()
+    {
+        $this->connectDatabase();
+    }
+    public function connectDatabase()
+    {
+        try {
+            $this->connection = new PDO('mysql:host=' . SERVERNAME . ';dbname=' . DBNAME, USERNAME, PASSWORD);
+            $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            echo "Conectado com sucesso.";
+        } catch (PDOException $e) {
+            echo "Conexão falhou: " . $e->getMessage();
+            die();
+        }
+    }
+}
