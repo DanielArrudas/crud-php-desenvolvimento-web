@@ -2,14 +2,13 @@
 
 require_once './configuration/connect.php';
 
-//essa classe faz as consultas, inserção, alteração no banco de dados
 class ClientModel extends Connect
 {
     private $table;
 
     public function __construct()
     {
-        parent::__construct(); //abrindo conexão no banco de dados
+        parent::__construct();
         $this->table = 'clients';
     }
     public function getAll(): array
@@ -18,7 +17,7 @@ class ClientModel extends Connect
         $resultQuery = $sqlSelect->fetchAll();
         return $resultQuery;
     }
-    public function isCPFvalide($cpf): bool
+    public function isCPFValide($cpf): bool
     {
         if (strlen($cpf) != 11) {
             return false;
@@ -43,7 +42,7 @@ class ClientModel extends Connect
     public function save($formData): array
     {
         $erros = [];
-        if (!$this->isCPFvalide($formData['cpf'])) {
+        if (!$this->isCPFValide($formData['cpf'])) {
             $erros['cpf'] = 'O CPF informado é inválido.';
         }
         if (strlen($formData['telefone']) != 11) {

@@ -8,9 +8,8 @@ class ClientsController
 
     public function __construct()
     {
-        $this->model = new ClientModel(); //recebe a instancia da model
+        $this->model = new ClientModel();
     }
-    //controller nunca mexe com os dados no db, sempre a model
     public function getAll()
     {
         $mensagem = null;
