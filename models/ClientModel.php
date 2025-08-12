@@ -39,22 +39,58 @@ class ClientModel extends Connect
         return true;
 
     }
-    public function save($formData): array
+    public function verifyErrors($formData): array
     {
-        $erros = [];
+        $errors = [];
         if (!$this->isCPFValide($formData['cpf'])) {
-            $erros['cpf'] = 'O CPF informado é inválido.';
+            $errors['cpf'] = 'O CPF informado é inválido.';
         }
         if (strlen($formData['telefone']) != 11) {
-            $erros['telefone'] = 'O telefone informado é inválido.';
+            $errors['telefone'] = 'O telefone informado é inválido.';
         }
-        if (!empty($erros)) {
-            return $erros;
+        return $errors;
+    }
+    public function save($formData): array
+    {
+        $errors = $this->verifyErrors($formData);
+        if (!empty($errors)) {
+            return $errors;
         }
         $formData['escolaridade'] = (int) $formData['escolaridade'];
         $query = "
         INSERT INTO $this->table (nome, cpf, telefone, email, escolaridade)
         VALUES (:nome, :cpf, :telefone, :email, :escolaridade);
+        ";
+
+        try {
+            $sqlInsert = $this->connection->prepare($query);
+            $sqlInsert->execute($formData);
+            return [];
+        } catch (PDOException $e) {
+            return ['db_error' => 'Ocorreu um erro ao salvar os dados no servidor.'];
+        }
+    }
+
+    public function getClientByID($id)
+    {
+        $query = "
+        SELECT * FROM $this->table
+        WHERE id = $id
+        ";
+        $sqlSelect = $this->connection->query($query);
+        $resultQuery = $sqlSelect->fetch();
+        return $resultQuery;
+    }
+    public function update($formData)
+    {
+        $errors = $this->verifyErrors($formData);
+        if (!empty($errors)) {
+            return $errors;
+        }
+        $formData['escolaridade'] = (int) $formData['escolaridade'];
+        $query = "
+        UPDATE $this->table
+        SET nome = :nome, cpf = :cpf, telefone = :telefone, email = :email, escolaridade = :escolaridade
         ";
 
         try {

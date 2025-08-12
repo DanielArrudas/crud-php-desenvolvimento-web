@@ -46,8 +46,16 @@
                             <td><?= $data['telefone'] ?></td>
                             <td><?= $data['email'] ?></td>
                             <td><?= $escolaridadeFormatado ?></td>
-                            <td><a href="">Alterar</a></td>
-                            <td><a href="">Excluir</a></td>
+                            <td>
+                                <form action="index.php?action=change&id=<?= $data['id'] ?>" method="post">
+                                    <button type="submit">Alterar</button>
+                                </form>
+                            </td>
+                            <td>
+                                <form action="index.php?action=delete&id=<?= $data['id'] ?>" method="post">
+                                    <button type="submit">Excluir</button>
+                                </form>
+                            </td>
                         </tr>
                     <?php endforeach; ?>
 
@@ -61,7 +69,7 @@
             </form>
         </div>
     </div>
-    <?php if(isset($mensagem)): ?>
+    <?php if (isset($mensagem)): ?>
         <p><?= $mensagem ?></p>
     <?php endif; ?>
 </body>
