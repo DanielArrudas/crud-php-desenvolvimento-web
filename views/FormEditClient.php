@@ -10,7 +10,7 @@
 <body>
     <div class="content">
         <h1>Alterar</h1>
-        <form action="index.php?action=update" method="post">
+        <form action="index.php?action=update&id=<?= $resultClient['id'] ?>" method="post">
             <label>Nome:</label>
             <input type="text" name="nome" value="<?= $resultClient['nome'] ?>" required />
             <label>CPF:</label>
@@ -34,9 +34,9 @@
             <button type="submit">Visualizar Clientes</button>
         </form>
     </div>
-    <?php if (!empty($erros)): ?>
-        <?php foreach ($erros as $erro): ?>
-            <p><?= $erro ?></p>
+    <?php if (!empty($errors)): ?>
+        <?php foreach ($errors as $error): ?>
+            <p><?= $error ?></p>
         <?php endforeach; ?>
     <?php endif; ?>
 </body>
