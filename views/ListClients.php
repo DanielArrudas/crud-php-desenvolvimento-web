@@ -19,7 +19,6 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th>ID</th>
                         <th>Nome</th>
                         <th>CPF</th>
                         <th>Telefone</th>
@@ -40,7 +39,6 @@
                         }
                             ?>
                         <tr>
-                            <td><?= $data['id'] ?></td>
                             <td><?= $data['nome'] ?></td>
                             <td><?= $data['cpf'] ?></td>
                             <td><?= $data['telefone'] ?></td>
