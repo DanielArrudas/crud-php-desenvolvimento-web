@@ -5,27 +5,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clientes</title>
+    <link rel="stylesheet" href="views/css/index.css">
 </head>
 
 <body>
-    <h1>Lista de Clientes</h1>
+    <main class="content">
+        <h1>Lista de Clientes</h1>
 
-    <div class="content">
-        <?php if (empty($resultData)): ?>
-            <h3>Nenhum cliente cadastrado.</h3>
+        <?php if (isset($mensagem)): ?>
+            <p class="mensagem"><?= $mensagem ?></p>
         <?php endif; ?>
+        
+        <div>
+            <form action="index.php" method="get">
+                <button type="submit" name="action" value="create" class="btn-cadastrar">Cadastrar Novo Cliente</button>
+            </form>
+        </div>
 
-        <?php if (!empty($resultData)): ?>
+        <?php if (empty($resultData)): ?>
+            <h3 style="text-align: center; margin-top: 2rem;">Nenhum cliente cadastrado.</h3>
+        <?php else: ?>
             <table class="table">
                 <thead>
                     <tr>
+                        <th>ID</th>
                         <th>Nome</th>
                         <th>CPF</th>
                         <th>Telefone</th>
                         <th>Email</th>
                         <th>Escolaridade</th>
-                        <th></th>
-                        <th></th>
+                        <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -35,41 +44,29 @@
                             1 => 'Ensino Fundamental',
                             2 => 'Ensino Médio',
                             3 => 'Ensino Superior',
-                            default => 'Escolaridade Inválida'
+                            default => 'Inválida'
                         }
-                            ?>
+                        ?>
                         <tr>
-                            <td><?= $data['nome'] ?></td>
-                            <td><?= $data['cpf'] ?></td>
-                            <td><?= $data['telefone'] ?></td>
-                            <td><?= $data['email'] ?></td>
+                            <td><?= $data['id'] ?></td>
+                            <td><?= htmlspecialchars($data['nome']) ?></td>
+                            <td><?= htmlspecialchars($data['cpf']) ?></td>
+                            <td><?= htmlspecialchars($data['telefone']) ?></td>
+                            <td><?= htmlspecialchars($data['email']) ?></td>
                             <td><?= $escolaridadeFormatado ?></td>
-                            <td>
-                                <form action="index.php?action=change&id=<?= $data['id'] ?>" method="post">
+                            <td class="acoes">
+                                <form action="index.php?action=change&id=<?= $data['id'] ?>" method="post" style="display: inline;">
                                     <button type="submit">Alterar</button>
                                 </form>
-                            </td>
-                            <td>
-                                <form action="index.php?action=delete&id=<?= $data['id'] ?>" method="post">
+                                <form action="index.php?action=delete&id=<?= $data['id'] ?>" method="post" style="display: inline; margin-left: 5px;">
                                     <button type="submit">Excluir</button>
                                 </form>
                             </td>
                         </tr>
                     <?php endforeach; ?>
-
                 </tbody>
             </table>
         <?php endif; ?>
-        <br>
-        <div>
-            <form action="index.php" method="get">
-                <button type="submit" name="action" value="create">Cadastrar Novo Cliente</button>
-            </form>
-        </div>
-    </div>
-    <?php if (isset($mensagem)): ?>
-        <p><?= $mensagem ?></p>
-    <?php endif; ?>
+    </main>
 </body>
-
 </html>
