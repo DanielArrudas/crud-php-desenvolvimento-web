@@ -33,9 +33,9 @@
             <button type="submit">Visualizar Clientes</button>
         </form>
     </div>
-    <?php if (!empty($erros)): ?>
-        <?php foreach ($erros as $erro): ?>
-            <p><?= $erro ?></p>
+    <?php if (!empty($errors)): ?>
+        <?php foreach ($errors as $error): ?>
+            <p><?= $error ?></p>
         <?php endforeach; ?>
     <?php endif; ?>
 </body>
