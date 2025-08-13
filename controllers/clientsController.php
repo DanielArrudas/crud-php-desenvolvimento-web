@@ -58,7 +58,7 @@ class ClientsController
             require_once 'views/formClient.php';
         }
     }
-    public function change(array $errors = null)
+    public function change(?array $errors = null)
     {
         $resultClient = $this->model->getClientByID($_GET['id']);
 
