@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="views/css/index.css" />
     <title>Alteração de Cliente</title>
 </head>
 
@@ -11,34 +12,50 @@
     <div class="content">
         <h1>Alterar</h1>
         <form action="index.php?action=update&id=<?= $resultClient['id'] ?>" method="post">
-            <label>Nome:</label>
-            <input type="text" name="nome" value="<?= $resultClient['nome'] ?>" required />
-            <label>CPF:</label>
-            <input type="text" name="cpf" value="<?= $resultClient['cpf'] ?>" required />
-            <label>Telefone:</label>
-            <input type="text" name="telefone" value="<?= $resultClient['telefone'] ?>" required />
-            <label>Email:</label>
-            <input type="email" name="email" value="<?= $resultClient['email'] ?>" required />
+            <div>
+                <input type="text" name="nome" class="inputs" placeholder="Digite seu Nome"
+                    value="<?= $resultClient['nome'] ?>" required />
+            </div>
+            <div>
+                <input type="text" name="cpf" class="inputs" placeholder="Digite seu CPF"
+                    value="<?= $resultClient['cpf'] ?>" required />
+            </div>
+            <div>
+                <input type="text" name="telefone" class="inputs" placeholder="Digite seu Telefone"
+                    value="<?= $resultClient['telefone'] ?>" required />
+            </div>
+            <div>
+                <input type="email" name="email" class="inputs" placeholder="Digite seu Email"
+                    value="<?= $resultClient['email'] ?>" required />
+            </div>
 
-            <label>Escolaridade:</label>
-            <select name="escolaridade" required>
-                <option value="" disabled>Selecione</option>
+            <p>Escolaridade:</p>
+            <div class="box-select">
                 <?php foreach ($opcoesEscolaridade as $key => $opcao): ?>
-                    <?php $selecionado = ($key === $escolaridadeAtualCliente) ? 'selected' : ''; ?>
-                    <option value="<?= $key ?>" <?= $selecionado ?>><?= $opcao ?></option>
+                    <?php $checked = ($key === $escolaridadeAtualCliente) ? 'checked' : '';
+                    ?>
+
+                    <div>
+                        <input type="radio" id="<?= $key ?>" value="<?= $key ?>" name="escolaridade" <?= $checked ?>
+                            required />
+                        <label for="<?= $key ?>"><?= $opcao ?></label>
+                    </div>
                 <?php endforeach; ?>
-            </select>
+            </div>
             <button type="submit">Alterar</button>
         </form>
         <form action="index.php" method="get">
-            <button type="submit">Visualizar Clientes</button>
+            <button type="submit">Voltar</button>
         </form>
+
+        <?php if (!empty($errors)): ?>
+            <div class="erros">
+                <?php foreach ($errors as $error): ?>
+                    <p><?= $error ?></p>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
     </div>
-    <?php if (!empty($errors)): ?>
-        <?php foreach ($errors as $error): ?>
-            <p><?= $error ?></p>
-        <?php endforeach; ?>
-    <?php endif; ?>
 </body>
 
 </html>
