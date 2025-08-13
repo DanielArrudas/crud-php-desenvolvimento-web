@@ -43,22 +43,22 @@ class ClientsController
             'cpf' => preg_replace('/\D/', '', $_POST['cpf']),
             'telefone' => preg_replace('/\D/', '', $_POST['telefone']),
             'email' => filter_var($_POST['email'], FILTER_SANITIZE_EMAIL),
-            'escolaridade' => $_POST['escolaridade'],
+            'escolaridade' => (int) $_POST['escolaridade'],
         ];
     }
     public function store()
     {
         $formData = $this->cleanFormData();
 
-        $erros = $this->model->save($formData);
-        if (empty($erros)) {
+        $errors = $this->model->save($formData);
+        if (empty($errors)) {
             header('Location: index.php?action=GetAll&status=success');
             exit();
         } else {
             require_once 'views/formClient.php';
         }
     }
-    public function change()
+    public function change(array $errors = null)
     {
         $resultClient = $this->model->getClientByID($_GET['id']);
 
@@ -74,12 +74,24 @@ class ClientsController
     public function update()
     {
         $formData = $this->cleanFormData();
-        $erros = $this->model->update($formData);
-        if (empty($erros)) {
+        $formData['id'] = (int)$_GET['id'];
+        $errors = $this->model->update($formData);
+        if (empty($errors)) {
             header('Location: index.php?action=GetAll&status=updated');
             exit();
         } else {
-            require_once 'views/formClient.php';
+            $this->change($errors);
+        }
+    }
+    public function delete()
+    {
+        $errors = $this->model->delete($_GET['id']);
+        if (empty($errors)) {
+            header('Location: index.php?action=GetAll&status=deleted');
+            exit();
+        } else {
+            header('Location: index.php?action=GetAll&status=error');
+            exit();
         }
     }
 }
