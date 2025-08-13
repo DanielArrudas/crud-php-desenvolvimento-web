@@ -17,7 +17,7 @@ class ClientModel extends Connect
         $resultQuery = $sqlSelect->fetchAll();
         return $resultQuery;
     }
-    public function isCPFValide($cpf): bool
+    public function isCPFValide(string $cpf): bool
     {
         if (strlen($cpf) != 11) {
             return false;
@@ -39,6 +39,7 @@ class ClientModel extends Connect
         return true;
 
     }
+
     public function verifyErrors($formData): array
     {
         $errors = [];
@@ -50,13 +51,30 @@ class ClientModel extends Connect
         }
         return $errors;
     }
-    public function save($formData): array
+    public function issetCPF(string $cpf)
+    {
+        $sqlCpf = $this->connection->query("SELECT * FROM $this->table WHERE cpf = '$cpf'");
+        $resultQuery = $sqlCpf->fetch();
+        return $resultQuery;
+    }
+    public function issetEmail(string $email)
+    {
+        $sqlEmail = $this->connection->query("SELECT * FROM $this->table WHERE email = '$email'");
+        $resultQuery = $sqlEmail->fetch();
+        return $resultQuery;
+    }
+    public function save(array $formData): array
     {
         $errors = $this->verifyErrors($formData);
+        if($this->issetCPF($formData['cpf'])) {
+            $errors['cpfExists'] = 'O CPF informado já existe.';   
+        }
+        if($this->issetEmail($formData['email'])) {
+            $errors['emailExists'] = 'O Email informado já existe.';   
+        }
         if (!empty($errors)) {
             return $errors;
         }
-        $formData['escolaridade'] = (int) $formData['escolaridade'];
         $query = "
         INSERT INTO $this->table (nome, cpf, telefone, email, escolaridade)
         VALUES (:nome, :cpf, :telefone, :email, :escolaridade);
@@ -71,7 +89,7 @@ class ClientModel extends Connect
         }
     }
 
-    public function getClientByID($id)
+    public function getClientByID(int $id)
     {
         $query = "
         SELECT * FROM $this->table
@@ -81,16 +99,16 @@ class ClientModel extends Connect
         $resultQuery = $sqlSelect->fetch();
         return $resultQuery;
     }
-    public function update($formData)
+    public function update(array $formData)
     {
         $errors = $this->verifyErrors($formData);
         if (!empty($errors)) {
             return $errors;
         }
-        $formData['escolaridade'] = (int) $formData['escolaridade'];
         $query = "
         UPDATE $this->table
         SET nome = :nome, cpf = :cpf, telefone = :telefone, email = :email, escolaridade = :escolaridade
+        WHERE id = :id
         ";
 
         try {
@@ -98,7 +116,22 @@ class ClientModel extends Connect
             $sqlInsert->execute($formData);
             return [];
         } catch (PDOException $e) {
-            return ['db_error' => 'Ocorreu um erro ao salvar os dados no servidor.'];
+            return ['db_error' => 'Ocorreu um erro ao atualizar os dados no servidor.'];
+        }
+    }
+    public function delete(int $id)
+    {
+        $query = "
+        DELETE FROM $this->table
+        WHERE id = :id
+        ";
+
+        try {
+            $sqlInsert = $this->connection->prepare($query);
+            $sqlInsert->execute(['id' => $id]);
+            return [];
+        } catch (PDOException $e) {
+            return ['db_error' => 'Ocorreu um erro ao atualizar os dados no servidor.'];
         }
     }
 }
