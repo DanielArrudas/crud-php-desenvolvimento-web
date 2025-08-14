@@ -17,6 +17,17 @@ class ClientModel extends Connect
         $resultQuery = $sqlSelect->fetchAll();
         return $resultQuery;
     }
+    
+/**
+ * Valida um CPF de acordo com o algoritmo oficial.
+ *
+ * Esta função foi adaptada da implementação de Rafael Neri, disponível publicamente.
+ * @author Rafael Neri
+ * @source https://gist.github.com/rafael-neri/ab3e58803a08cb4def059fce4e3c0e40
+ *
+ * @param string $cpf O CPF para validação, contendo apenas números.
+ * @return bool Retorna true se o CPF for válido, false caso contrário.
+ */
     public function isCPFValide(string $cpf): bool
     {
         if (strlen($cpf) != 11) {
