@@ -49,7 +49,6 @@ class ClientsController
     public function store()
     {
         $formData = $this->cleanFormData();
-
         $errors = $this->model->save($formData);
         if (empty($errors)) {
             header('Location: index.php?action=GetAll&status=success');
