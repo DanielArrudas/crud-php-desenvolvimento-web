@@ -81,7 +81,7 @@
         document.querySelectorAll(".btn-delete").forEach(el => {
             el.addEventListener("click", function (e) {
                 e.preventDefault();
-                if (confirm('Tem certeza que deseja deletar esse cliente?')) {
+                if (confirm('Deseja realmente excluir o cliente <?= htmlspecialchars($data['nome']) ?>? A exclusão é permanente.')) {
                     this.parentNode.submit();
                 }
             });
