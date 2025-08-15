@@ -142,7 +142,7 @@ class ClientModel extends Connect
             $sqlInsert->execute(['id' => $id]);
             return [];
         } catch (PDOException $e) {
-            return ['db_error' => 'Ocorreu um erro ao atualizar os dados no servidor.'];
+            return ['db_error' => 'Ocorreu um erro ao deletar os dados no servidor.'];
         }
     }
 }
